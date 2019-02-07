@@ -67,6 +67,5 @@ Other
 This should be a simple matter of installing and starting it, and configuring the application.properties to point to the
 new URL.
 
-2. The app looks on the classpath for the sample.json file to read in.
-In a prod system this is likely a parameter to be passed in as a command line arg.
+
 
