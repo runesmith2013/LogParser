@@ -20,18 +20,15 @@ public class RecordService {
     private RecordRepository recordRepository;
 
 
-    public void save(Record record) {
-        recordRepository.save(record);
-
-    }
-
     public Map<String, Record> save(Map<String, Record> records) {
 
         Map<String, Record> incompleteRecords = new HashMap<>();
 
         records.forEach((k,v) -> {
             if (v.getDuration() != 0) {
-                LOGGER.debug("Saving record {}", v);
+
+                //-- TODO: set this to DEBUG in a prod system
+                LOGGER.info("Saving record {}", v);
                 recordRepository.save(v);
 
             } else {

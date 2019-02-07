@@ -1,4 +1,4 @@
-package ç;
+package com.cs.logparser;
 
 
 import org.slf4j.Logger;
