@@ -4,6 +4,7 @@ import com.cs.logparser.App;
 import com.cs.logparser.domain.Record;
 import com.cs.logparser.repository.RecordRepository;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
