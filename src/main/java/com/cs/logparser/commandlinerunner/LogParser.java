@@ -34,7 +34,19 @@ public class LogParser implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        String pathToFile = locateFile();
+        String pathToFile = null;
+
+        if (args.length != 1) {
+            LOGGER.error("Path to input file not specified");
+            throw new IllegalArgumentException("Input file not specified" );
+
+        } else {
+            pathToFile = args[0];
+            if (!Files.exists(Paths.get(pathToFile))) {
+                throw new IllegalArgumentException("Input file not found "+ pathToFile );
+            }
+        }
+
 
         ObjectMapper mapper = new ObjectMapper();
         recordBuffer = new HashMap<>();
@@ -89,20 +101,6 @@ public class LogParser implements CommandLineRunner {
         }
     }
 
-    /**
-     * Look up the file that we'll be processing
-     * @return
-     */
-    private String locateFile() {
-        URL systemResource  = ClassLoader.getSystemResource(fileName);
-        if (systemResource == null) {
-            LOGGER.error("Unable to find the requested file {} ", fileName);
-            throw new IllegalStateException("Unable to find the requested file " + fileName);
-        }
-
-        return systemResource.getFile();
-    }
-
 
     private void flushRecords(Map<String,Record> records) {
         Map<String, Record> incompleteRecords = recordService.save(records);
@@ -110,10 +108,7 @@ public class LogParser implements CommandLineRunner {
         records.putAll(incompleteRecords);
     }
 
-    @Value("${json.filename}")
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
+
 
     public Map<String, Record> getRecordBuffer() {
         return this.recordBuffer;

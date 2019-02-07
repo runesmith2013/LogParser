@@ -14,6 +14,8 @@ import org.springframework.boot.test.context.ConfigFileApplicationContextInitial
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.net.URL;
+
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.junit.Assert.assertThat;
@@ -38,8 +40,8 @@ public class LogParserTest {
     @Test
     public void testSampleFile_allRecordsSaveCorrectly() throws Exception {
 
-        logParser.setFileName("sample.json");
-        logParser.run();
+        String file = locateFile("sample.json");
+        logParser.run(file);
 
         assertThat(repository.count(), is(3L));
 
@@ -72,8 +74,8 @@ public class LogParserTest {
     @Test
     public void testIncompleteFile_allRecordsSaveCorrectly() throws Exception {
 
-        logParser.setFileName("incomplete.json");
-        logParser.run();
+        String file = locateFile("incomplete.json");
+        logParser.run(file);
 
         assertThat(repository.count(), is(2L));
 
@@ -100,14 +102,27 @@ public class LogParserTest {
     @Test
     public void testMissingFile_failsCorrectly() throws Exception {
 
-        thrown.expect(IllegalStateException.class);
-        thrown.expectMessage("Unable to find the requested file unknown.json");
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("Input file not found unknown.json");
 
-        logParser.setFileName("unknown.json");
-        logParser.run();
+        String file = "unknown.json";
+        logParser.run(file);
 
     }
 
+
+    /*
+     * Test that not providing a file is handled correctly
+     */
+    @Test
+    public void testNoInputFile_failsCorrectly() throws Exception {
+
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("Input file not specified");
+
+        logParser.run();
+
+    }
 
     /*
      * Test that a file with invalid data is handled correctly
@@ -118,9 +133,19 @@ public class LogParserTest {
         thrown.expect(IllegalStateException.class);
         thrown.expectMessage("Error parsing lines from the JSON file invalid.json ");
 
-        logParser.setFileName("invalid.json");
-        logParser.run();
+        String file = locateFile("invalid.json");
+        logParser.run(file);
 
     }
 
+
+    /**
+     * Look up the file that we'll be processing
+     * @return
+     */
+    private String locateFile(String fileName) {
+        URL systemResource  = ClassLoader.getSystemResource(fileName);
+
+        return systemResource.getFile();
+    }
 }
