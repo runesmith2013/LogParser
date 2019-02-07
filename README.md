@@ -37,6 +37,7 @@ This reads lazily from the log file, so we should be able to handle any amount o
 Test cases were developed using TDD.
 
 Edge cases:
+----------
 In the case where a large amount of data is incomplete, i.e only one record exists, the buffer will grow until it consumes
 the entire heap and the application will crash.
 How to mitigate is something to discuss with the business users. Potential options are:
@@ -44,8 +45,8 @@ How to mitigate is something to discuss with the business users. Potential optio
 2. flush them to the database with incomplete columns.
 
 Multi-threading
-
-I ran over time before being able to implement multi-threading.
+---------------
+I ran over time before being able to fully implement multi-threading.
 My plan would be:
 - use the ExecutorService to create a fixed thread pool based on the number of cpu cores.
 - set up the ExecutorService to shutdown if not given work for a period of time (5s?).
@@ -61,6 +62,7 @@ Note: some quick research suggests that a single thread to read the log file is 
 This is an area that would bear testing out.
 
 Other
+-----
 1. I ran over time before setting up HSQL DB as a standalone file-based store.
 This should be a simple matter of installing and starting it, and configuring the application.properties to point to the
 new URL.
