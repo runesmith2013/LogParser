@@ -14,10 +14,10 @@ Once we reach the end of the file, the remaining elements in the buffer are also
 TO RUN
 ======
 - clone the repository
-- run the gradle classes task
-- run the com.cs.logparser.App class from your IDE (I used IntelliJ)
+- run the gradle bootJar task to create an executable jar
 
-Note: for a prod system, I'd use the gradle bootJar task to create an executable jar file.
+- run java -jar build/libs/gs-spring-boot.jar <path to input file>
+
 
 Design decisions
 ----------------
