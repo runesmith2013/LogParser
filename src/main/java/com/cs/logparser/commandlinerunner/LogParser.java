@@ -1,6 +1,5 @@
 package com.cs.logparser.commandlinerunner;
 
-import com.cs.logparser.App;
 import com.cs.logparser.domain.Record;
 import com.cs.logparser.service.RecordService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +23,7 @@ import java.util.stream.Stream;
 public class LogParser implements CommandLineRunner {
 
     private String fileName;
-    private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogParser.class);
 
     @Autowired
     private RecordService recordService;
